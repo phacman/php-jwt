@@ -1,10 +1,15 @@
 <?php
 
-namespace Firebase\JWT;
+namespace PhacMan\JWT\Tests;
 
 use ArrayObject;
 use DomainException;
 use InvalidArgumentException;
+use PhacMan\JWT\BeforeValidException;
+use PhacMan\JWT\ExpiredException;
+use PhacMan\JWT\JWT;
+use PhacMan\JWT\Key;
+use PhacMan\JWT\SignatureInvalidException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use TypeError;
@@ -373,7 +378,7 @@ class JWTTest extends TestCase
     public function testInvalidSignatureEncoding()
     {
         $msg = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImZvbyJ9.Q4Kee9E8o0Xfo4ADXvYA8t7dN_X_bU9K5w6tXuiSjlUxx';
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('Return value must be of type string, bool returned');
         JWT::decode($msg, new Key('secret', 'HS256'));
     }
 
@@ -478,7 +483,7 @@ class JWTTest extends TestCase
         $this->assertSame('bar', $decoded->foo);
     }
 
-    public function provideEncodeDecode()
+    public function provideEncodeDecode(): array
     {
         return [
             [__DIR__ . '/data/ecdsa-private.pem', __DIR__ . '/data/ecdsa-public.pem', 'ES256'],

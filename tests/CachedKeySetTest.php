@@ -1,9 +1,17 @@
 <?php
 
-namespace Firebase\JWT;
+namespace PhacMan\JWT\Tests;
 
+use DateInterval;
+use DateTime;
+use DateTimeZone;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 use LogicException;
 use OutOfBoundsException;
+use PhacMan\JWT\CachedKeySet;
+use PhacMan\JWT\JWT;
+use PhacMan\JWT\Key;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -12,20 +20,21 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use RuntimeException;
+use UnexpectedValueException;
 
 class CachedKeySetTest extends TestCase
 {
     use ProphecyTrait;
 
-    private $testJwksUri = 'https://jwk.uri';
-    private $testJwksUriKey = 'jwkshttpsjwk.uri';
-    private $testJwks1 = '{"keys": [{"kid":"foo","kty":"RSA","alg":"foo","n":"","e":""}]}';
-    private $testCachedJwks1 = ['foo' => ['kid' => 'foo', 'kty' => 'RSA', 'alg' => 'foo', 'n' => '', 'e' => '']];
-    private $testJwks2 = '{"keys": [{"kid":"bar","kty":"RSA","alg":"bar","n":"","e":""}]}';
-    private $testJwks3 = '{"keys": [{"kid":"baz","kty":"RSA","n":"","e":""}]}';
+    private string $testJwksUri = 'https://jwk.uri';
+    private string $testJwksUriKey = 'jwkshttpsjwk.uri';
+    private string $testJwks1 = '{"keys": [{"kid":"foo","kty":"RSA","alg":"foo","n":"","e":""}]}';
+    private array $testCachedJwks1 = ['foo' => ['kid' => 'foo', 'kty' => 'RSA', 'alg' => 'foo', 'n' => '', 'e' => '']];
+    private string $testJwks2 = '{"keys": [{"kid":"bar","kty":"RSA","alg":"bar","n":"","e":""}]}';
+    private string $testJwks3 = '{"keys": [{"kid":"baz","kty":"RSA","n":"","e":""}]}';
 
-    private $googleRsaUri = 'https://www.googleapis.com/oauth2/v3/certs';
-    private $googleEcUri = 'https://www.gstatic.com/iap/verify/public_key-jwk';
+    private string $googleRsaUri = 'https://www.googleapis.com/oauth2/v3/certs';
+    private string $googleEcUri = 'https://www.gstatic.com/iap/verify/public_key-jwk';
 
     public function testEmptyUriThrowsException()
     {
@@ -90,7 +99,7 @@ class CachedKeySetTest extends TestCase
 
     public function testInvalidHttpResponseThrowsException()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('HTTP Error: 404 URL not found');
         $this->expectExceptionCode(404);
 
@@ -363,13 +372,13 @@ class CachedKeySetTest extends TestCase
      */
     public function testFullIntegration(string $jwkUri): void
     {
-        if (!class_exists(\GuzzleHttp\Psr7\HttpFactory::class)) {
+        if (!class_exists(HttpFactory::class)) {
             self::markTestSkipped('Guzzle 7 only');
         }
         // Create cache and http objects
         $cache = new TestMemoryCacheItemPool();
-        $http = new \GuzzleHttp\Client();
-        $factory = new \GuzzleHttp\Psr7\HttpFactory();
+        $http = new Client();
+        $factory = new HttpFactory();
 
         // Determine "kid" dynamically, because these constantly change
         $response = $http->get($jwkUri);
@@ -461,7 +470,7 @@ class CachedKeySetTest extends TestCase
  */
 final class TestMemoryCacheItemPool implements CacheItemPoolInterface
 {
-    private $items;
+    private iterable $items;
     private $deferredItems;
 
     public function getItem($key): CacheItemInterface
@@ -538,10 +547,10 @@ final class TestMemoryCacheItemPool implements CacheItemPoolInterface
  */
 final class TestMemoryCacheItem implements CacheItemInterface
 {
-    private $key;
+    private string $key;
     private $value;
     private $expiration;
-    private $isHit = false;
+    private bool $isHit = false;
 
     public function __construct(string $key)
     {
@@ -587,12 +596,12 @@ final class TestMemoryCacheItem implements CacheItemInterface
 
     public function expiresAfter($time)
     {
-        $this->expiration = $this->currentTime()->add(new \DateInterval("PT{$time}S"));
+        $this->expiration = $this->currentTime()->add(new DateInterval("PT{$time}S"));
         return $this;
     }
 
     protected function currentTime()
     {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
+        return new DateTime('now', new DateTimeZone('UTC'));
     }
 }

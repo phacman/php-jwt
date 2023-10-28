@@ -1,8 +1,12 @@
 <?php
 
-namespace Firebase\JWT;
+declare(strict_types=1);
+
+namespace PhacMan\JWT;
 
 use InvalidArgumentException;
+use function is_resource;
+use function is_string;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use TypeError;
@@ -16,17 +20,16 @@ class Key
 
     /**
      * @param string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate $keyMaterial
-     * @param string $algorithm
      */
     public function __construct(
         $keyMaterial,
         string $algorithm
     ) {
         if (
-            !\is_string($keyMaterial)
+            !is_string($keyMaterial)
             && !$keyMaterial instanceof OpenSSLAsymmetricKey
             && !$keyMaterial instanceof OpenSSLCertificate
-            && !\is_resource($keyMaterial)
+            && !is_resource($keyMaterial)
         ) {
             throw new TypeError('Key material must be a string, resource, or OpenSSLAsymmetricKey');
         }
@@ -45,11 +48,9 @@ class Key
     }
 
     /**
-     * Return the algorithm valid for this key
-     *
-     * @return string
+     * Return the algorithm valid for this key.
      */
-    public function getAlgorithm(): string
+    public function getAlgorithm() : string
     {
         return $this->algorithm;
     }

@@ -1,9 +1,12 @@
 <?php
 
-namespace Firebase\JWT;
+declare(strict_types=1);
+
+namespace PhacMan\JWT;
 
 use ArrayAccess;
 use InvalidArgumentException;
+use function is_string;
 use LogicException;
 use OutOfBoundsException;
 use Psr\Cache\CacheItemInterface;
@@ -11,6 +14,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use RuntimeException;
+use function strlen;
 use UnexpectedValueException;
 
 /**
@@ -96,30 +100,28 @@ class CachedKeySet implements ArrayAccess
 
     /**
      * @param string $keyId
-     * @return Key
      */
-    public function offsetGet($keyId): Key
+    public function offsetGet($keyId) : Key
     {
         if (!$this->keyIdExists($keyId)) {
             throw new OutOfBoundsException('Key ID not found');
         }
-        return JWK::parseKey($this->keySet[$keyId], $this->defaultAlg);
+
+        $qwe = $this->keySet[$keyId];
+
+        return JWK::parseKey($qwe, $this->defaultAlg);
     }
 
-    /**
-     * @param string $keyId
-     * @return bool
-     */
-    public function offsetExists($keyId): bool
+    public function offsetExists(mixed $offset) : bool
     {
-        return $this->keyIdExists($keyId);
+        return $this->keyIdExists($offset);
     }
 
     /**
      * @param string $offset
      * @param Key $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, $value) : void
     {
         throw new LogicException('Method not implemented');
     }
@@ -127,7 +129,7 @@ class CachedKeySet implements ArrayAccess
     /**
      * @param string $offset
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset($offset) : void
     {
         throw new LogicException('Method not implemented');
     }
@@ -135,7 +137,7 @@ class CachedKeySet implements ArrayAccess
     /**
      * @return array<mixed>
      */
-    private function formatJwksForCache(string $jwks): array
+    private function formatJwksForCache(string $jwks) : array
     {
         $jwks = json_decode($jwks, true);
 
@@ -149,14 +151,14 @@ class CachedKeySet implements ArrayAccess
 
         $keys = [];
         foreach ($jwks['keys'] as $k => $v) {
-            $kid = isset($v['kid']) ? $v['kid'] : $k;
+            $kid = $v['kid'] ?? $k;
             $keys[(string) $kid] = $v;
         }
 
         return $keys;
     }
 
-    private function keyIdExists(string $keyId): bool
+    private function keyIdExists(mixed $keyId) : bool
     {
         if (null === $this->keySet) {
             $item = $this->getCacheItem();
@@ -166,7 +168,7 @@ class CachedKeySet implements ArrayAccess
                 $this->keySet = $item->get();
                 // If the cached item is a string, the JWKS response was cached (previous behavior).
                 // Parse this into expected format array<kid, jwk> instead.
-                if (\is_string($this->keySet)) {
+                if (is_string($this->keySet)) {
                     $this->keySet = $this->formatJwksForCache($this->keySet);
                 }
             }
@@ -205,7 +207,7 @@ class CachedKeySet implements ArrayAccess
         return true;
     }
 
-    private function rateLimitExceeded(): bool
+    private function rateLimitExceeded() : bool
     {
         if (!$this->rateLimit) {
             return false;
@@ -222,19 +224,20 @@ class CachedKeySet implements ArrayAccess
         }
         $cacheItem->set($callsPerMinute);
         $this->cache->save($cacheItem);
+
         return false;
     }
 
-    private function getCacheItem(): CacheItemInterface
+    private function getCacheItem() : CacheItemInterface
     {
-        if (\is_null($this->cacheItem)) {
+        if (null === $this->cacheItem) {
             $this->cacheItem = $this->cache->getItem($this->cacheKey);
         }
 
         return $this->cacheItem;
     }
 
-    private function setCacheKeys(): void
+    private function setCacheKeys() : void
     {
         if (empty($this->jwksUri)) {
             throw new RuntimeException('JWKS URI is empty');
@@ -247,7 +250,7 @@ class CachedKeySet implements ArrayAccess
         $key = $this->cacheKeyPrefix . $key;
 
         // Hash keys if they exceed $maxKeyLength of 64
-        if (\strlen($key) > $this->maxKeyLength) {
+        if (strlen($key) > $this->maxKeyLength) {
             $key = substr(hash('sha256', $key), 0, $this->maxKeyLength);
         }
 
@@ -258,7 +261,7 @@ class CachedKeySet implements ArrayAccess
             $rateLimitKey = $this->cacheKeyPrefix . 'ratelimit' . $key;
 
             // Hash keys if they exceed $maxKeyLength of 64
-            if (\strlen($rateLimitKey) > $this->maxKeyLength) {
+            if (strlen($rateLimitKey) > $this->maxKeyLength) {
                 $rateLimitKey = substr(hash('sha256', $rateLimitKey), 0, $this->maxKeyLength);
             }
 

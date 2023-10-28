@@ -1,9 +1,20 @@
 <?php
 
-namespace Firebase\JWT;
+declare(strict_types=1);
 
+namespace PhacMan\JWT;
+
+use function base64_encode;
+use function chr;
+use function chunk_split;
+use function count;
 use DomainException;
 use InvalidArgumentException;
+use function ltrim;
+use function openssl_error_string;
+use function openssl_pkey_get_public;
+use function pack;
+use function strlen;
 use UnexpectedValueException;
 
 /**
@@ -13,10 +24,9 @@ use UnexpectedValueException;
  * PHP version 5
  *
  * @category Authentication
- * @package  Authentication_JWT
  * @author   Bui Sy Nguyen <nguyenbs@gmail.com>
  * @license  http://opensource.org/licenses/BSD-3-Clause 3-clause BSD
- * @link     https://github.com/firebase/php-jwt
+ * @see     https://github.com/firebase/php-jwt
  */
 class JWK
 {
@@ -38,7 +48,7 @@ class JWK
     ];
 
     /**
-     * Parse a set of JWK keys
+     * Parse a set of JWK keys.
      *
      * @param array<mixed> $jwks The JSON Web Key Set as an associative array
      * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
@@ -52,7 +62,7 @@ class JWK
      *
      * @uses parseKey
      */
-    public static function parseKeySet(array $jwks, string $defaultAlg = null): array
+    public static function parseKeySet(array $jwks, string $defaultAlg = null) : array
     {
         $keys = [];
 
@@ -65,13 +75,13 @@ class JWK
         }
 
         foreach ($jwks['keys'] as $k => $v) {
-            $kid = isset($v['kid']) ? $v['kid'] : $k;
+            $kid = $v['kid'] ?? $k;
             if ($key = self::parseKey($v, $defaultAlg)) {
                 $keys[(string) $kid] = $key;
             }
         }
 
-        if (0 === \count($keys)) {
+        if (0 === count($keys)) {
             throw new UnexpectedValueException('No supported algorithms found in JWK Set');
         }
 
@@ -79,7 +89,7 @@ class JWK
     }
 
     /**
-     * Parse a JWK key
+     * Parse a JWK key.
      *
      * @param array<mixed> $jwk An individual JWK
      * @param string       $defaultAlg The algorithm for the Key object if "alg" is not set in the
@@ -93,7 +103,7 @@ class JWK
      *
      * @uses createPemFromModulusAndExponent
      */
-    public static function parseKey(array $jwk, string $defaultAlg = null): ?Key
+    public static function parseKey(array $jwk, string $defaultAlg = null) : ?Key
     {
         if (empty($jwk)) {
             throw new InvalidArgumentException('JWK must not be empty');
@@ -104,7 +114,7 @@ class JWK
         }
 
         if (!isset($jwk['alg'])) {
-            if (\is_null($defaultAlg)) {
+            if (null === $defaultAlg) {
                 // The "alg" parameter is optional in a KTY, but an algorithm is required
                 // for parsing in this library. Use the $defaultAlg parameter when parsing the
                 // key set in order to prevent this error.
@@ -124,12 +134,13 @@ class JWK
                 }
 
                 $pem = self::createPemFromModulusAndExponent($jwk['n'], $jwk['e']);
-                $publicKey = \openssl_pkey_get_public($pem);
+                $publicKey = openssl_pkey_get_public($pem);
                 if (false === $publicKey) {
                     throw new DomainException(
-                        'OpenSSL error: ' . \openssl_error_string()
+                        'OpenSSL error: ' . openssl_error_string()
                     );
                 }
+
                 return new Key($publicKey, $jwk['alg']);
             case 'EC':
                 if (isset($jwk['d'])) {
@@ -150,6 +161,7 @@ class JWK
                 }
 
                 $publicKey = self::createPemFromCrvAndXYCoordinates($jwk['crv'], $jwk['x'], $jwk['y']);
+
                 return new Key($publicKey, $jwk['alg']);
             case 'OKP':
                 if (isset($jwk['d'])) {
@@ -171,6 +183,7 @@ class JWK
 
                 // This library works internally with EdDSA keys (Ed25519) encoded in standard base64.
                 $publicKey = JWT::convertBase64urlToBase64($jwk['x']);
+
                 return new Key($publicKey, $jwk['alg']);
             default:
                 break;
@@ -185,10 +198,8 @@ class JWK
      * @param   string  $crv The EC curve (only P-256 & P-384 is supported)
      * @param   string  $x   The EC x-coordinate
      * @param   string  $y   The EC y-coordinate
-     *
-     * @return  string
      */
-    private static function createPemFromCrvAndXYCoordinates(string $crv, string $x, string $y): string
+    private static function createPemFromCrvAndXYCoordinates(string $crv, string $x, string $y) : string
     {
         $pem =
             self::encodeDER(
@@ -206,7 +217,7 @@ class JWK
                 ) .
                 self::encodeDER(
                     self::ASN1_BIT_STRING,
-                    \chr(0x00) . \chr(0x04)
+                    chr(0x00) . chr(0x04)
                     . JWT::urlsafeB64Decode($x)
                     . JWT::urlsafeB64Decode($y)
                 )
@@ -219,7 +230,7 @@ class JWK
     }
 
     /**
-     * Create a public key represented in PEM format from RSA modulus and exponent information
+     * Create a public key represented in PEM format from RSA modulus and exponent information.
      *
      * @param string $n The RSA modulus encoded in Base64
      * @param string $e The RSA exponent encoded in Base64
@@ -231,67 +242,64 @@ class JWK
     private static function createPemFromModulusAndExponent(
         string $n,
         string $e
-    ): string {
+    ) : string {
         $mod = JWT::urlsafeB64Decode($n);
         $exp = JWT::urlsafeB64Decode($e);
 
-        $modulus = \pack('Ca*a*', 2, self::encodeLength(\strlen($mod)), $mod);
-        $publicExponent = \pack('Ca*a*', 2, self::encodeLength(\strlen($exp)), $exp);
+        $modulus = pack('Ca*a*', 2, self::encodeLength(strlen($mod)), $mod);
+        $publicExponent = pack('Ca*a*', 2, self::encodeLength(strlen($exp)), $exp);
 
-        $rsaPublicKey = \pack(
+        $rsaPublicKey = pack(
             'Ca*a*a*',
             48,
-            self::encodeLength(\strlen($modulus) + \strlen($publicExponent)),
+            self::encodeLength(strlen($modulus) + strlen($publicExponent)),
             $modulus,
             $publicExponent
         );
 
         // sequence(oid(1.2.840.113549.1.1.1), null)) = rsaEncryption.
-        $rsaOID = \pack('H*', '300d06092a864886f70d0101010500'); // hex version of MA0GCSqGSIb3DQEBAQUA
-        $rsaPublicKey = \chr(0) . $rsaPublicKey;
-        $rsaPublicKey = \chr(3) . self::encodeLength(\strlen($rsaPublicKey)) . $rsaPublicKey;
+        $rsaOID = pack('H*', '300d06092a864886f70d0101010500'); // hex version of MA0GCSqGSIb3DQEBAQUA
+        $rsaPublicKey = chr(0) . $rsaPublicKey;
+        $rsaPublicKey = chr(3) . self::encodeLength(strlen($rsaPublicKey)) . $rsaPublicKey;
 
-        $rsaPublicKey = \pack(
+        $rsaPublicKey = pack(
             'Ca*a*',
             48,
-            self::encodeLength(\strlen($rsaOID . $rsaPublicKey)),
+            self::encodeLength(strlen($rsaOID . $rsaPublicKey)),
             $rsaOID . $rsaPublicKey
         );
 
         return "-----BEGIN PUBLIC KEY-----\r\n" .
-            \chunk_split(\base64_encode($rsaPublicKey), 64) .
+            chunk_split(base64_encode($rsaPublicKey), 64) .
             '-----END PUBLIC KEY-----';
     }
 
     /**
-     * DER-encode the length
+     * DER-encode the length.
      *
      * DER supports lengths up to (2**8)**127, however, we'll only support lengths up to (2**8)**4.  See
      * {@link http://itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf#p=13 X.690 paragraph 8.1.3} for more information.
-     *
-     * @param int $length
-     * @return string
      */
-    private static function encodeLength(int $length): string
+    private static function encodeLength(int $length) : string
     {
         if ($length <= 0x7F) {
-            return \chr($length);
+            return chr($length);
         }
 
-        $temp = \ltrim(\pack('N', $length), \chr(0));
+        $temp = ltrim(pack('N', $length), chr(0));
 
-        return \pack('Ca*', 0x80 | \strlen($temp), $temp);
+        return pack('Ca*', 0x80 | strlen($temp), $temp);
     }
 
     /**
      * Encodes a value into a DER object.
-     * Also defined in Firebase\JWT\JWT
+     * Also defined in PhacMan\JWT\JWT.
      *
      * @param   int     $type DER tag
      * @param   string  $value the value to encode
      * @return  string  the encoded object
      */
-    private static function encodeDER(int $type, string $value): string
+    private static function encodeDER(int $type, string $value) : string
     {
         $tag_header = 0;
         if ($type === self::ASN1_SEQUENCE) {
@@ -299,10 +307,10 @@ class JWK
         }
 
         // Type
-        $der = \chr($tag_header | $type);
+        $der = chr($tag_header | $type);
 
         // Length
-        $der .= \chr(\strlen($value));
+        $der .= chr(strlen($value));
 
         return $der . $value;
     }
@@ -313,31 +321,31 @@ class JWK
      * @param   string $oid the OID string
      * @return  string the binary DER-encoded OID
      */
-    private static function encodeOID(string $oid): string
+    private static function encodeOID(string $oid) : string
     {
         $octets = explode('.', $oid);
 
         // Get the first octet
         $first = (int) array_shift($octets);
         $second = (int) array_shift($octets);
-        $oid = \chr($first * 40 + $second);
+        $oid = chr($first * 40 + $second);
 
         // Iterate over subsequent octets
         foreach ($octets as $octet) {
-            if ($octet == 0) {
-                $oid .= \chr(0x00);
+            if ($octet === 0) {
+                $oid .= chr(0x00);
                 continue;
             }
             $bin = '';
 
             while ($octet) {
-                $bin .= \chr(0x80 | ($octet & 0x7f));
+                $bin .= chr(0x80 | ($octet & 0x7F));
                 $octet >>= 7;
             }
-            $bin[0] = $bin[0] & \chr(0x7f);
+            $bin &= chr(0x7F);
 
             // Convert to big endian if necessary
-            if (pack('V', 65534) == pack('L', 65534)) {
+            if (pack('V', 65534) === pack('L', 65534)) {
                 $oid .= strrev($bin);
             } else {
                 $oid .= $bin;

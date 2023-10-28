@@ -1,7 +1,11 @@
 <?php
 
-namespace Firebase\JWT;
+declare(strict_types=1);
 
-class SignatureInvalidException extends \UnexpectedValueException
+namespace PhacMan\JWT;
+
+use UnexpectedValueException;
+
+class SignatureInvalidException extends UnexpectedValueException
 {
 }

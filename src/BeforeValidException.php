@@ -1,17 +1,21 @@
 <?php
 
-namespace Firebase\JWT;
+declare(strict_types=1);
 
-class BeforeValidException extends \UnexpectedValueException implements JWTExceptionWithPayloadInterface
+namespace PhacMan\JWT;
+
+use UnexpectedValueException;
+
+class BeforeValidException extends UnexpectedValueException implements JWTExceptionWithPayloadInterface
 {
     private object $payload;
 
-    public function setPayload(object $payload): void
+    public function setPayload(object $payload) : void
     {
         $this->payload = $payload;
     }
 
-    public function getPayload(): object
+    public function getPayload() : object
     {
         return $this->payload;
     }
