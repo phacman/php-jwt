@@ -1,0 +1,426 @@
+Brent Shaffer (67):
+      2017-06-21 21:22:34 | 2261c1c | Merge pull request #129 from stampycode/patch-1
+      2017-06-21 21:26:30 | 0f8f85a | Fixes travis, adds PHP 7.1, and removes HHVM (#160)
+      2017-06-21 21:38:45 | aa6419a | Updates JWT::verify to handle openssl errors (#159)
+      2017-06-21 23:50:08 | d2c50fd | removes minimum-stabity from composer.json (#161)
+      2017-06-22 00:51:26 | d67523f | Detect invalid Base64 encoding in signature (#162)
+      2017-06-26 20:28:13 | f97b3e3 | Remove outdated package.xml (#165)
+      2017-06-28 01:17:23 | 9984a4d | updates README changelog for v5.0.0 (#166) (tag: v5.0.0)
+      2018-01-26 22:13:29 | bac0422 | Adds PHP 7.2 to Travis (#186)
+      2019-11-05 10:08:04 | 5f68890 | Fixes tests, adds PHP 7.3 (#257)
+      2020-02-19 21:32:56 | ecb25af | tests: update PHPUnit test classes (#193)
+      2020-02-25 02:15:03 | 4566062 | feat: add support for ES256 algorithm (#256) (tag: v5.1.0)
+      2020-03-05 23:29:27 | 5cd7ae0 | remove ignore_bit_strings (#276)
+      2020-03-21 22:59:57 | 27ee05f | test: use keys for testing JWK (#283)
+      2020-03-25 21:49:23 | feb0e82 | chore: fixes cs and adds cs checking to travis (#284) (tag: v5.2.0)
+      2020-10-26 20:34:38 | 1fae8c4 | docs: add JWK usage to README (#307)
+      2021-05-17 19:37:21 | 8ddb395 | chore: remove travis, add github actions (#331)
+      2021-05-17 19:49:46 | d7cd1db | fix: allow for null d values in RSA JWK (#330)
+      2021-05-18 01:50:39 | fd08d5a | chore(docs): clean up README (#332)
+      2021-05-18 01:57:50 | 75693c0 | chore(tests): add php 5.3 test
+      2021-05-18 02:35:58 | d87688f | chore(tests): fix entrypoint for php 5.3 (#333)
+      2021-05-20 19:48:20 | ae3188c | chore: test cleanup (#334)
+      2021-05-20 20:37:02 | 3c2d70f | chore: add tests and docs for rsa with passphrase (#335) (tag: v5.3.0)
+      2021-06-22 21:05:02 | c63c1a7 | feat: make parseKey public (#337)
+      2021-06-23 19:39:56 | 44d0a5a | chore(tests): add rsa encode/decode (#344)
+      2021-11-04 00:57:11 | 17513df | chore: fix tests (#366)
+      2021-11-04 19:15:22 | bc0df64 | feat: add Key object to prevent key/algorithm type confusion  (#365)
+      2021-11-04 19:21:41 | cf81444 | chore: explicit third parameter to decode function in README (tag: v5.5.0)
+      2021-11-08 23:18:51 | 83b6090 | fix: phpdoc and exception (#371) (tag: v5.5.1)
+      2021-12-02 01:04:45 | 262f84c | chore: switch main to master (#383)
+      2021-12-02 01:06:59 | fbe6394 | chore(docs): fix typo in README
+      2021-12-30 22:00:10 | edda0f9 | feat!: require Key object, use JSON_UNESCAPED_SLASHES, remove constants (#376)
+      2022-01-24 17:32:49 | 8699eb9 | chore: update changelog for v6.0.0 (#391)
+      2022-01-24 18:18:34 | 0541cba | feat!: update return type for JWK methods (#392) (tag: v6.0.0)
+      2022-02-07 17:54:21 | abc63f3 | fix: correct order for hash_equals (#393)
+      2022-02-07 18:04:10 | 7e0a273 | fix: use property_exists for checking key id (#395)
+      2022-02-16 17:14:33 | f8550f8 | feat: add typing, require PHP 8.0 (#385)
+      2022-02-16 17:33:52 | 958938b | chore: remove phpunit shim (#401)
+      2022-02-16 21:44:52 | e41b22a | chore: add array casting to README (#402)
+      2022-02-17 17:42:40 | 13082f8 | chore: add phpstan for static analysis (#406)
+      2022-02-23 18:10:42 | 92aa12d | chore: update library to phpstan level 7 (#407)
+      2022-03-21 01:59:35 | 52943f5 | feat: add back compatibility for >= PHP 7.1 (#405)
+      2022-03-23 21:12:10 | 5bbc90c | chore: add back timestamp var for compatibility (#412)
+      2022-03-23 21:26:04 | fbb2967 | chore: update CHANGELOG for v6.1.0 (tag: v6.1.0)
+      2022-04-14 02:27:14 | e67638d | fix: add flag to force object (#416) (tag: v6.1.1)
+      2022-04-21 17:37:18 | c297139 | fix: revert add flag to force object (#420) (tag: v6.1.2)
+      2022-04-26 19:52:40 | 6a6025b | chore: add cs config, fix git-attributes, removed unused entrypoint.sh (#424)
+      2022-04-28 01:26:15 | 2308363 | feat: add cached keyset (#397)
+      2022-05-13 23:54:50 | d28e6df | feat: add defaultAlg param (#426) (tag: v6.2.0)
+      2022-07-15 01:17:28 | 64ed2e5 | feat: Add ES256 support to JWK (#399)
+      2022-07-15 01:49:39 | c68f2a7 | chore: fix styles and phpstan (#440)
+      2022-07-15 19:48:45 | 018dfc4 | chore: prepare v6.3.0 (#441) (tag: v6.3.0)
+      2022-10-05 20:57:44 | 60b52b7 | fix: casing of GET for PSR compat (#451)
+      2022-10-05 22:50:38 | 1cd2137 | chore(docs): add examples for exception handling (#463)
+      2022-11-01 23:55:48 | b4998d7 | chore: add release-please (#467)
+      2022-11-02 00:06:07 | 436fa9c | chore: move changelog into separate file (#469)
+      2022-11-02 00:24:10 | bad1b04 | fix: check kid before using as array index
+      2022-12-20 01:07:05 | 7df47dd | chore: add PHP 8.2 to test suite (#476)
+      2023-02-08 17:14:01 | 78d3ed1 | feat: improve caching by only decoding jwks when necessary (#486)
+      2023-04-26 19:55:25 | 2bc0128 | chore(docs): add multiple keys example to README (#503)
+      2023-05-11 01:31:19 | 9dc46a9 | fix: allow KID of '0' (#505)
+      2023-05-12 18:11:51 | 2ba5544 | chore: drop support for PHP 7.3 (#495)
+      2023-05-12 18:44:11 | 52cd980 | chore: release 6.5.0
+      2023-06-13 20:08:24 | dacbbfc | chore: update README
+      2023-06-14 22:26:33 | 91c39c7 | fix: handle invalid http responses (#508)
+      2023-06-14 22:28:03 | 15d579a | chore(tests): remove unused variable
+      2023-06-30 23:08:13 | 299105a | chore: add tests for latest fixes (#512)
+      2023-10-05 02:59:04 | 175edf9 | feat: add payload to jwt exception (#521)
+
+Rob DiMarco (35):
+      2015-04-01 19:51:42 | 17c8e96 | Merge pull request #33 from sarciszewski/patch-1
+      2015-04-01 20:08:59 | 8c7f0c8 | Merge pull request #34 from sarciszewski/patch-2
+      2015-04-01 20:12:42 | 2afa78e | Update to ./run-tests.sh
+      2015-04-01 20:15:23 | 8049f19 | Add'l updates to the ./run-tests.sh script
+      2015-04-01 20:47:36 | 10918f2 | Updates to JWT decode() / verify() path
+      2015-04-01 20:58:25 | b2c2be6 | Update decode() to require allowed algorithms arg when verifying
+      2015-04-01 21:02:21 | ffb412e | Comment tweaks
+      2015-04-01 21:08:56 | 9f71bef | Merge branch 'rd-verify-refactor' into cr-additional-tests
+      2015-04-01 21:19:55 | d137805 | Update README to reflect newly-required algorithms arguments
+      2015-04-01 21:39:10 | 4e15ea5 | Add a few add'l tests
+      2015-04-01 21:39:37 | c6583dc | Merge pull request #36 from firebase/cr-additional-tests
+      2015-04-01 21:46:38 | ffcfd88 | Bump version to 2.0.0 (tag: v2.0.0)
+      2015-04-01 21:56:17 | 9db5eeb | Add Changelog
+      2015-04-01 21:56:25 | 0cb1d5a | Merge branch 'master' of github.com:firebase/php-jwt
+      2015-04-13 21:10:21 | 652f3c6 | Merge pull request #37 from stof/patch-1
+      2015-05-19 00:27:55 | f68efb8 | Merge pull request #46 from lcabral37/skew
+      2015-05-19 00:38:18 | ee031fb | Reset clock skew / leeway after relevant tests & update README
+      2015-05-20 00:30:28 | 7a15d3c | Merge pull request #48 from aztech-forks/master
+      2015-05-20 22:10:49 | da199a7 | Update README for v2.1.0 release
+      2015-05-20 22:16:04 | fb21972 | Update package.xml (tag: v2.1.0)
+      2015-05-20 22:22:10 | 30a0668 | Add badges for latest release, total downloads, and license
+      2015-06-23 00:33:56 | dcaa08e | Merge pull request #53 from mcocaro/master
+      2015-06-23 02:26:39 | e0a75bf | Update README and bump to v2.2.0 (tag: v2.2.0)
+      2015-07-05 16:14:22 | 21498f7 | Add composer.phar to gitignore
+      2015-07-09 19:51:32 | 436e005 | Merge pull request #59 from Dashron/master
+      2015-07-16 20:06:25 | 11855db | Merge pull request #62 from johanderuijter/docblock
+      2015-07-22 21:16:47 | 37a6b73 | Merge pull request #60 from sjones608/nullkey
+      2015-07-22 21:31:08 | fa8a06e | Update package.xml and README.md for 3.0.0 release (tag: v3.0.0)
+      2015-09-08 21:13:38 | 4a94b91 | Merge pull request #66 from firebase/jw-travis-upgrade
+      2015-11-19 09:05:17 | c35d52b | Addresses issue #72 - update link to current spec
+      2016-06-16 22:49:56 | e72feba | Merge pull request #76 from akeeman/patch-1
+      2016-06-16 22:52:16 | 8087bbe | Merge pull request #96 from legoktm/patch-1
+      2016-06-16 22:53:44 | b1816ba | Merge pull request #93 from josephmcdermott/specify-current-timestamp
+      2016-06-16 22:59:46 | 19860fa | Merge pull request #82 from voku/master
+      2016-07-18 07:51:16 | dccf163 | Update README for v4.0.0 (tag: v4.0.0)
+
+Chris Raynor (24):
+      2014-06-18 21:29:52 | 5c2eb12 | whitespace cleanup
+      2014-06-18 21:39:32 | 2f57086 | Merge pull request #6 from 4026/master
+      2014-06-20 23:26:34 | 112be06 | This fixes #8 by checking if JSON_BIGINT_AS_STRING is defined and falling back to the pre 5.4 code path otherwise
+      2014-06-20 23:29:48 | 718e9c7 | style fix
+      2014-06-25 23:19:32 | 3bb58d7 | Merge branch 'master' of git://github.com/BambooHR/php-jwt into BambooHR-master
+      2014-06-25 23:30:42 | c59b68d | whitespace cleanup
+      2014-06-26 00:50:56 | d6c2f29 | This fixes #9 - Improve check for offending json-c implementation with missing implementation of JSON_BIGINT_AS_STRING on 64 bit systems
+      2014-06-26 01:10:45 | 47fc8a3 | Merge pull request #10 from firebase/fix-bigint-as-string
+      2014-06-26 01:15:09 | c5e07e0 | Merge branch 'master' into BambooHR-master
+      2014-06-26 01:20:33 | fa7e362 | Merge pull request #11 from firebase/BambooHR-master
+      2014-08-25 19:28:46 | ef31051 | adding documentation around casting the result to an associative array
+      2014-08-25 20:12:03 | fdf4b18 | Merge pull request #14 from firebase/object-docs
+      2014-08-28 21:14:17 | 58c1e61 | adding version for a stable release (tag: v1.0.0)
+      2014-08-28 21:20:29 | 9e5ae03 | removing version
+      2014-09-10 05:40:58 | fd7ac44 | Switching to a constant-time string comparison in the verify method
+      2014-09-10 05:45:30 | 988e102 | adding test for invalid signature
+      2014-09-10 05:49:07 | 6e4b999 | Merge pull request #17 from firebase/constant-time
+      2014-10-23 20:21:36 | 0cc1ae6 | Fixing install command typo
+      2014-11-15 01:32:03 | c20a3cb | Merge pull request #23 from firebase/integration
+      2014-11-18 20:58:25 | 83b8899 | Merge pull request #24 from brendo/iat-claim-check
+      2015-02-12 18:57:00 | 724b1fc | Merge pull request #29 from maurotdo/travis-hhvm
+      2015-04-01 21:08:35 | ffed276 | Merge pull request #35 from firebase/rd-verify-refactor
+      2015-04-01 21:48:00 | e8f31fc | Update composer.json
+      2015-05-20 20:52:42 | 08a5a47 | Merge pull request #47 from firebase/rd-improve-test-isolation
+
+Anant Narayanan (13):
+      2013-01-01 03:09:27 | 06fb98e | Minor formatting changes
+      2013-01-01 03:50:34 | 872d372 | Update tests to latest phpunit
+      2013-01-01 04:07:33 | 24b0757 | Update package file for PEAR submission
+      2013-01-01 04:28:13 | 696fd27 | Add README and package file
+      2013-01-01 04:39:20 | 0e112c9 | Syntax highligh example
+      2013-04-04 02:56:16 | 564878f | Some re-organization as per PEPr suggestions
+      2013-04-04 03:17:10 | 0d3b9be | Fix warnings and errors reported by PHP_CodeSniffer
+      2013-04-04 03:26:05 | 82113fd | Add info on tests
+      2013-07-09 20:41:05 | f4fc744 | Merge pull request #1 from CompendiumSoftware/master
+      2013-08-30 22:56:22 | c794eeb | Merge pull request #2 from phansys/master
+      2013-08-31 00:26:50 | b8acf5a | Merge pull request #3 from phansys/master
+      2013-09-04 00:34:24 | 2a44e10 | Merge pull request #4 from phansys/master
+      2013-09-04 00:55:18 | 53669d6 | Fix build status link in README
+
+release-please[bot] (9):
+      2022-11-02 00:20:08 | ddfaddc | chore(main): release 6.3.1 (#468) (tag: v6.3.1)
+      2022-12-19 20:10:46 | ea7dda7 | chore(main): release 6.3.2 (#470) (tag: v6.3.2)
+      2023-02-10 00:01:23 | 4dd1e00 | chore(main): release 6.4.0 (#477) (tag: v6.4.0)
+      2023-05-12 18:47:07 | e94e735 | chore(main): release 6.5.0 (#506) (tag: v6.5.0)
+      2023-06-13 20:11:06 | 5a9cf79 | chore(main): release 6.6.0 (#511) (tag: v6.6.0)
+      2023-06-14 18:29:26 | 71278f2 | chore(main): release 6.7.0 (#518) (tag: v6.7.0)
+      2023-06-20 19:45:35 | 48b0210 | chore(main): release 6.8.0 (#519) (tag: v6.8.0)
+      2023-07-14 21:33:00 | 5dbc895 | chore(main): release 6.8.1 (#524) (tag: v6.8.1)
+      2023-10-05 03:24:42 | f03270e | chore(main): release 6.9.0 (#537) (HEAD -> main, tag: v6.9.0, origin/main, origin/HEAD)
+
+Brendan Abbott (6):
+      2014-11-13 04:56:25 | 39c1f1b | Add a .gitignore file for the vendor/ directory
+      2014-11-13 04:59:03 | b18c305 | Minor CS changes
+      2014-11-13 05:04:38 | 0b01cd0 | Add checking of nbf claim
+      2014-11-13 05:46:11 | ea4db8d | Add specific exceptions for checking claims. Fix bad tests for exp and nbf. RE: firebase/php-jwt#20
+      2014-11-17 04:27:21 | ec3a4a8 | Add check for iat claim with some minor documentation updates
+      2014-11-17 04:29:36 | 8b6d4f0 | Minor documentation update for SignatureInvalidException
+
+Martin Cocaro (6):
+      2015-06-18 00:21:04 | 25253be | Adding header options to add
+      2015-06-18 00:59:20 | bd842ca | Adding array_values only
+      2015-06-18 00:59:47 | ce3f43f | Merging both arrays together
+      2015-06-18 02:06:48 | 2de26c2 | Assigning to header var merged array
+      2015-06-18 02:16:06 | abc1f5b | Adding test
+      2015-06-18 21:29:01 | 37feebf | Reversing array merge to avoid overwrites of default headers
+
+John LeSueur (5):
+      2014-06-19 18:15:02 | 269eca3 | Update JWT.php
+      2014-06-19 21:03:53 | b31429e | Update JWT.php
+      2014-06-20 00:54:22 | 144e201 | Update JWT.php
+      2014-06-23 19:06:27 | b582985 | 1. Allow encode to take a "kid" parameter 2. Allow decode to take an array of keys, and use the "kid" to look up the key. 3. Add RS256 as an algorithm 4. Add tests for the above
+      2014-06-23 22:38:44 | 026a6d9 | Updates for some whitespace and other minor issues.
+
+Neuman Vong (5):
+      2011-03-26 02:08:00 | 24e0322 | Start tracking project
+      2011-03-26 02:47:36 | 45e3765 | Fix misspelled extension dep (tag: v0.0.0)
+      2011-04-28 04:16:15 | 6fc8c26 | Stop padding inputs already divisible by 4
+      2011-06-30 01:18:31 | c8e1b4d | Merge pull request #1 from progrium/patch-1
+      2013-01-01 02:11:04 | 4f56837 | BSD3
+
+Phansys (5):
+      2013-07-19 20:05:10 | ae54c37 | Added composer.json to allow install and dependency management through Composer.
+      2013-08-30 23:55:02 | a68d81b | Added config for phpunit and Travis CI.
+      2013-08-31 00:16:09 | ae83e89 | Added autoload.php.dist for test suite.
+      2013-08-31 00:16:51 | 66c3957 | Merge branch 'master' of https://github.com/phansys/php-jwt
+      2013-09-02 18:07:39 | 4d2ecb5 | Updated README.md.
+
+Scott Arciszewski (5):
+      2015-04-01 09:33:48 | ec013c9 | Allow users to lock their app into an algorithm.
+      2015-04-01 09:47:28 | 62345ab | Add note to readme
+      2015-04-01 09:48:46 | 9ea3a22 | Add GnuPG verified phpunit script
+      2015-04-01 10:18:23 | 485d4cb | Harden against mbstring.func_overload edge-cases
+      2015-04-01 10:19:41 | b9a6b47 | Use native functions when they exist.
+
+Luis Miguel Cabral (4):
+      2015-04-09 14:02:54 | 61ff178 | Provide a leeway time in the verification of timestamps to account for clock skew
+      2015-05-11 13:20:39 | 95fa9ae | Changed the leeway to be a static variable
+      2015-05-11 13:32:11 | 3d9bd0a | Reverted some tests from first commit
+      2015-05-15 10:14:45 | 452f7c9 | Added tests with leeway value in nbf and iat
+
+drtriumph (4):
+      2014-11-15 01:05:46 | c40229f | Some minor cleanup from @brendo's PR with a quick rename
+      2014-11-15 01:09:02 | 2d5caeb | Merge branch 'brendo-integration' into integration
+      2014-11-15 01:29:25 | 301e6bc | Porting @brylie's change with a small modification
+      2015-04-01 21:07:46 | c612b99 | A few additional tests for none algorithm and an incorrect algorithm
+
+Aaron Hedges (3):
+      2015-07-01 20:18:06 | 3a48a27 | Add firespace\jwt namespace
+      2015-07-01 20:22:41 | d4fa25d | update example to use new namespace
+      2015-07-01 21:18:43 | 3a6b01a | fix unexpectedvalueexceptions and add unit tests
+
+Martin Krisell (3):
+      2019-11-12 22:16:19 | 264e5c7 | Whitespace style fix (#255)
+      2019-12-17 23:19:28 | 20f3729 | Use json_last_error without unnecessary existence check (#263)
+      2022-04-23 20:36:00 | 0ac5041 | chore: styles for short array and single quotes (#423)
+
+Steve Jones (3):
+      2015-07-08 20:50:06 | 49f7de6 | require a non-empty key to decode a JWT
+      2015-07-22 00:14:28 | d0e9a7a | Merge remote-tracking branch 'upstream/master' into nullkey
+      2015-07-22 01:19:09 | 17180b1 | add use InvalidArgumentException to account for JWT namespace
+
+4026 (2):
+      2014-06-17 21:06:09 | 565b2c6 | Adding preprocessing of the JSON string when decoding to prevent large integers being converted to floats.
+      2014-06-18 12:53:55 | f4013f8 | Correcting the bigint fix to produce objects rather than associative arrays in php versions < 5.4.0.
+
+Ajumal (2):
+      2023-05-09 18:06:06 | 4543842 | fix: Allow KID index 0
+      2023-05-10 15:38:43 | be6eb58 | fix: Allow KID index 0
+
+Arjan Keeman (2):
+      2015-12-31 00:08:26 | d99ab40 | Remove null as possible key value in docblock
+      2017-06-19 19:34:20 | 407a78d | draft-ietf-oauth-json-web-token-06 --> rfc7519 (#107)
+
+Chun-Sheng, Li (2):
+      2022-12-20 01:08:43 | 0178679 | chore: suggest ext-sodium (#474)
+      2023-01-11 02:39:17 | 08c7ba6 | chore(tests): use assertSame for strict equals (#478)
+
+Joseph McDermott (2):
+      2016-04-29 17:18:23 | bb6d53b | Allow timestamp to be specified rather than relying on PHP time() function
+      2016-05-03 11:43:19 | d6e222c | Commit with Google email address for CLA
+
+Phil Davis (2):
+      2020-03-16 18:23:03 | 51034b4 | test: allow for later versions of phpunit (#277)
+      2020-03-23 23:17:54 | 3811d69 | chore: code cleanup (#278)
+
+Tim Stamp (2):
+      2016-12-12 15:14:10 | 491ab3a | bugfix: 'kid' not in given key list
+      2017-01-24 13:56:53 | 64d7eb0 | cosmetic updates
+
+croensch (2):
+      2023-05-23 16:57:20 | 398ccd2 | fix: only check iat if nbf is not used (#493)
+      2023-06-28 21:25:09 | 3936842 | fix: accept float claims but round down to ignore them (#492)
+
+Akshay Khale (1):
+      2023-02-13 15:51:14 | 3b454f9 | chore: fix RS256 example in README
+
+Alexey Kopytko (1):
+      2023-05-04 00:26:21 | d957f8e | chore: skip null checks when input is never null (#502)
+
+Andrej Rypo (1):
+      2021-12-02 01:04:08 | 12ec2fe | chore(docs): add throws DomainException for JWT::decode (#379)
+
+Andres Berdugo (1):
+      2022-04-14 00:32:21 | a57a898 | chore: add missing docblock param for $alg (#419)
+
+André Glatzl (1):
+      2019-11-12 22:18:35 | bc324de | Clearer variable name in README (#229)
+
+Ashutosh K Tripathi (1):
+      2021-03-06 00:37:26 | 474047d | chore: remove leading backslashes in imports (#301)
+
+Aztech (1):
+      2015-05-19 13:46:52 | c595e2b | Add tests for \ArrayAccess key chooser
+
+Benoit Borrel (1):
+      2021-03-05 22:39:07 | 7b4f4d2 | chore: add phpdoc @throws in JWT::decode (#320)
+
+Brando Meniconi (1):
+      2022-07-15 19:09:18 | 607dcd4 | fix: cache jwks as string in CachedKeySet (#435)
+
+Chinedu Francis Nwafili (1):
+      2017-06-22 05:51:13 | 8becb3b | Add new line warning to README (#115)
+
+Christophe Coevoet (1):
+      2015-04-02 18:32:18 | 3e73291 | Remove the useless target-dir setting from the composer config
+
+Dan McFadden (1):
+      2013-06-28 19:08:17 | 90557bc | Fix package file
+
+David Mann (1):
+      2019-11-12 22:16:54 | 8228431 | Comment typo fix (#253)
+
+Eduardo Dobay (1):
+      2023-06-14 18:10:17 | e53979a | feat: add ed25519 support to JWK (public keys) (#452)
+
+Eric Tendian (1):
+      2020-03-21 22:34:46 | b0def5f | feat: adds JWK support (#273)
+
+Giorgio Balduzzi (1):
+      2017-06-21 23:57:21 | b2a5316 | Add the proper Exception message for all JSON error types by PHP (#110)
+
+Grant Anderson (1):
+      2021-02-12 03:02:00 | f42c911 | fix: add missing use statement in JWK (#303) (tag: v5.2.1)
+
+Henry N (1):
+      2017-06-19 19:40:24 | d6b3174 | example for RS256 openssl (#125)
+
+Ilia Urvachev (1):
+      2020-02-19 21:34:19 | 78ec50c | docs: fix missed param name (#207)
+
+Jacob Wenger (1):
+      2015-09-08 19:38:36 | aaf3015 | Update Travis to use their new container infrastructure
+
+Javier Spagnoletti (1):
+      2013-08-31 00:11:23 | ed151f8 | Update README.md
+
+Jeff Lindsay (1):
+      2011-06-30 01:16:06 | 082a66b | This is more correct according to the spec.
+
+Johan de Ruijter (1):
+      2015-07-15 20:45:30 | ebf6b25 | Aligned the DocBlocks Clarified and corrected the documentation where needed.
+
+Joost Faassen (1):
+      2017-06-19 19:29:59 | 7f72b48 | Support RS384 and RS512 (#117)
+
+Kunal Mehta (1):
+      2016-06-10 02:34:13 | 1db579c | Remove newline at beginning of run-tests.sh
+
+Lars Moelleken (1):
+      2016-02-01 15:26:42 | f2758c8 | [+]: ".gitattributes" <- prevent installing special files via composer [*]: add missing phpdoc
+
+Luís Vinícius Santos da Costa Barros (1):
+      2022-10-05 22:38:41 | 2e07d8a | fix: string interpolation format for php 8.2 (#446)
+
+Maks3w (1):
+      2016-06-16 23:01:28 | d6186e0 | Fix exceptions classes (#81)
+
+Mauro Maggi (1):
+      2015-02-12 18:02:45 | 28bc238 | Update .travis.yml
+
+Max (1):
+      2022-02-07 18:45:09 | 8bcbcf8 | chore(docs): fix release URL in README (#394)
+
+Michał (1):
+      2017-06-26 19:56:41 | 4db1e95 | added `array` type hinting to `decode` method (#101)
+
+Mitch Flindell (1):
+      2022-12-20 01:15:50 | 213924f | feat: add support for W3C ES256K (#462)
+
+NiMeDia (1):
+      2020-02-29 03:59:58 | 9eb9f98 | fix: added keywords to composer.json (#243) (#271)
+
+Nick Williams (1):
+      2019-11-05 07:39:45 | 2e5281c | Adds ES256 to supported algorithms (#239)
+
+Pascal Paulis (1):
+      2023-04-06 00:00:14 | 705d6a3 | chore: add ArrayAccess to PHPDoc for JWT::decode (#443)
+
+Petr Kotek (1):
+      2016-09-01 02:16:29 | 3aa3d97 | Travis: run tests also under PHP 5.6 and PHP 7.0 (#108)
+
+Pinchon Karim (1):
+      2023-06-13 19:35:01 | fb85f47 | feat: allow get headers when decoding token (#442)
+
+Redian (1):
+      2014-03-13 20:45:43 | 280bf6b | Checking the token expiry time
+
+Redian Ibra (1):
+      2014-04-11 18:14:48 | 2490881 | Writing some unittests to make sure the token expiry logic works as it should.
+
+Romain Menke (1):
+      2021-06-23 19:25:50 | 21b0c7b | chore: export-ignore github dir (#338)
+
+Sachin Bahukhandi (1):
+      2023-05-12 21:16:34 | 6c8f5e7 | chore(docs): add missing imports for example in README (#507)
+
+Saransh Dhingra (1):
+      2023-05-04 03:52:43 | 7970104 | chore(docs): example of unsafe header decode in README (#501)
+
+Scott Dutton (1):
+      2021-05-19 21:08:37 | 8d6bfd4 | chore: fix licence (#329)
+
+Sergei Kolesnikov (1):
+      2020-02-19 21:30:12 | ccc74fb | docs: add resource type as 2nd param in decode method (#205)
+
+Sergiy Petrov (1):
+      2021-11-04 01:00:38 | 804585f | chore: add PHP 8.1 (#362)
+
+ShaoBo Wan(無尘) (1):
+      2022-07-15 19:45:03 | 608668e | chore: update changelog for v6.2.0 (#434)
+
+Stoian Ivanov (1):
+      2021-05-19 21:19:30 | 9af3b99 | feat: add ES384 support (#324)
+
+Thibaud Fabre (1):
+      2015-05-19 13:39:00 | d089a3a | Allow using \ArrayAccess as $key in decode
+
+Thibault RICHARD (1):
+      2022-10-05 22:51:08 | f7886d5 | chore(docs): encode does not accept objects (#457)
+
+Tom Chapman (1):
+      2016-06-28 19:57:35 | d425647 | Add in support for late static binding, so that developers can extend and override variables / methods if they so require (#88)
+
+Vishwaraj Anand (1):
+      2023-07-14 20:49:54 | 0a53cf2 | chore: better BeforeValidException message for decode (#526)
+
+lleyton (1):
+      2023-06-14 22:28:31 | 5de4323 | feat: add support for P-384 curve (#515)
+
+mehdihasanpour (1):
+      2022-07-15 19:28:30 | 1494082 | chore: misc cleanup (#439)
+
+pwolanin (1):
+      2021-06-23 22:00:23 | d2113d9 | feat: add Ed25519 support to JWT (#343) (tag: v5.4.0)
+
+sergiy-petrov (1):
+      2020-02-12 01:35:53 | 23192ac | Add php 7.4  to travis (#266)
+
