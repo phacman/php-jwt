@@ -3,6 +3,7 @@
     "description": "Compact version: A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
     "homepage": "https://github.com/firebase/php-jwt",
     "keywords": ["php", "jwt","compact", "version"],
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Neuman Vong",
@@ -20,18 +21,26 @@
             "role": "Developer"
         }
     ],
-    "license": "BSD-3-Clause",
+    "scripts": {
+        "test": "phpunit",
+        "format-code": "php-cs-fixer fix --allow-risky=yes"
+    },
     "require": {
         "php": ">=8.1",
         "ext-openssl": "*"
     },
-    "suggest": {
-        "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present",
-        "ext-sodium": "Support EdDSA (Ed25519) signatures"
+    "require-dev": {
+        "guzzlehttp/guzzle": "^6.5||^7.4",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.5",
+        "friendsofphp/php-cs-fixer": "^3"
     },
     "autoload": {
         "psr-4": {
-            "PhacMan\\JWT\\": "src"
+            "PhacMan\\JWT\\": "src/",
+            "Psr\\Cache\\": "psr/cache/",
+            "Psr\\Http\\Client\\": "psr/client/",
+            "Psr\\Http\\Message\\": "psr/message/"
         }
     },
     "autoload-dev": {
@@ -39,17 +48,8 @@
             "PhacMan\\JWT\\Tests\\": "tests/"
         }
     },
-    "require-dev": {
-        "guzzlehttp/guzzle": "^6.5||^7.4",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.5",
-        "psr/cache": "^1.0||^2.0",
-        "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3"
-    },
-    "scripts": {
-        "test": "phpunit",
-        "format-code": "php-cs-fixer fix --allow-risky=yes"
+    "suggest": {
+        "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present",
+        "ext-sodium": "Support EdDSA (Ed25519) signatures"
     }
 }
