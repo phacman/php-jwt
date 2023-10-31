@@ -23,4 +23,4 @@ and not single quotes `''` in order to properly interpret the escaped characters
 [3-Clause BSD](http://opensource.org/licenses/BSD-3-Clause).
 
 ### Resources
-* Original repository: https://github.com/symfony/dotenv
+* Original repository: https://github.com/firebase/php-jwt
